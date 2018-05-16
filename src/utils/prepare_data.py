@@ -5,8 +5,6 @@ from shutil import copyfile
 src_path = 'data/raw_train/'
 destination_path = 'data/train/'
 
-whale_train = pd.read_csv("data/train.csv")
-
 
 def copy_example(filename, label):
     label_path = destination_path + label
@@ -19,5 +17,14 @@ def copy_example(filename, label):
     copyfile(src_file, destination_file)
 
 
-for index, row in whale_train.iterrows():
-    copy_example(row['Image'], row['Id'])
+def copy_examples():
+    whale_train = pd.read_csv("data/train.csv")
+
+    if not os.path.exists(destination_path):
+        os.mkdir(destination_path)
+
+    for index, row in whale_train.iterrows():
+        copy_example(row['Image'], row['Id'])
+
+
+copy_examples()
