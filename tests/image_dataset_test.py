@@ -24,11 +24,19 @@ class ImageDatasetTest(TestCase):
 
         self.with_patched_image_folder(block)
 
+    def test_creates_ImageFolder_with_the_expected_path(self):
+        def block(patched_image_folder):
+            mock_image_folder = 'fake image folder'
+            patched_image_folder.return_value = mock_image_folder
+            patched_image_folder.assert_called_with(self._path)
+
+        self.with_patched_image_folder(block)
+
     def test_creates_an_ImageFolder(self):
         def block(patched_image_folder):
-                mock_image_folder = 'fake image folder'
-                patched_image_folder.return_value = mock_image_folder
-                assert_that(self.subject()._image_folder, equal_to(mock_image_folder))
+            mock_image_folder = 'fake image folder'
+            patched_image_folder.return_value = mock_image_folder
+            assert_that(self.subject()._image_folder, equal_to(mock_image_folder))
 
         self.with_patched_image_folder(block)
 
@@ -41,18 +49,3 @@ class ImageDatasetTest(TestCase):
             assert_that(self.subject().__len__(), equal_to(length))
 
         self.with_patched_image_folder(block)
-
-    # I prefer the above style, because it will be easier to refactor later
-    # Also, in more complex cases where multiple things are patched, I really hate how
-    # the multiple patch decorator variables end up in a reversed ordering:
-    # http://www.voidspace.org.uk/python/mock/patch.html?highlight=stack#nesting-patch-decorators
-    # This is the version I prefer to use:
-    # https://stackoverflow.com/a/30799104
-    #
-    # The following test is the decorator version that I refactored away from:
-    # @patch('src.whale.image_dataset.ImageFolder')
-    # def test_the_ImageFolder_returns_length_based_on_the_image_folder(self, image_folder):
-    #     mock_image_folder = MagicMock('a mocked image folder')
-    #     mock_image_folder.__len__ .return_value = 42
-    #     image_folder.return_value = mock_image_folder
-    #     assert_that(self.subject().__len__(), equal_to(42))
