@@ -17,17 +17,14 @@ class ImageDatasetTest(TestCase):
         self._path = 'a/fake/path'
 
     def test_has_the_expected_path(self):
-        def block(patched_image_folder):
-            mock_image_folder = 'fake image folder'
-            patched_image_folder.return_value = mock_image_folder
+        def block(_patched_image_folder):
             assert_that(self.subject()._path, equal_to(self._path))
 
         self.with_patched_image_folder(block)
 
     def test_creates_ImageFolder_with_the_expected_path(self):
         def block(patched_image_folder):
-            mock_image_folder = 'fake image folder'
-            patched_image_folder.return_value = mock_image_folder
+            assert_that(self.subject()._path, equal_to(self._path))
             patched_image_folder.assert_called_with(self._path)
 
         self.with_patched_image_folder(block)
