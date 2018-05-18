@@ -5,13 +5,20 @@ from unittest.mock import patch, MagicMock
 
 
 class ImageDatasetTest(TestCase):
-    def subject(self):
-        return ImageDataset(self._path)
+    def subject(self, batch_size = 4, shuffle = True, num_workers = 8):
+        return ImageDataset(self._path, batch_size, shuffle, num_workers)
+
+    @staticmethod
+    def with_patched_image_loader_and_image_folder(block):
+        with patch('src.whale.image_dataset.ImageFolder') as patched_image_folder:
+            with patch('src.whale.image_dataset.DataLoader') as patched_data_loader:
+                block(patched_image_folder, patched_data_loader)
 
     @staticmethod
     def with_patched_image_folder(block):
         with patch('src.whale.image_dataset.ImageFolder') as patched_image_folder:
-            block(patched_image_folder)
+            with patch('src.whale.image_dataset.DataLoader') as _patched_data_loader:
+                block(patched_image_folder)
 
     def setUp(self):
         self._path = 'a/fake/path'
@@ -46,3 +53,28 @@ class ImageDatasetTest(TestCase):
             assert_that(self.subject().__len__(), equal_to(length))
 
         self.with_patched_image_folder(block)
+
+    def test_it_creates_an_ImageDataset_from_the_ImageFolder(self):
+        def block(patched_image_folder, patched_data_loader):
+            batch_size = 123
+            shuffle = False
+            num_workers = 50000
+            mock_image_folder = 'fake image folder'
+            patched_image_folder.return_value = mock_image_folder
+            mock_data_loader = 'fake data loader'
+            patched_data_loader.return_value = mock_data_loader
+            data_loader = self.subject(
+                batch_size,
+                shuffle,
+                num_workers
+            )._data_loader
+
+            assert_that(data_loader, equal_to(mock_data_loader))
+            patched_data_loader.assert_called_with(
+                mock_image_folder,
+                batch_size,
+                shuffle,
+                num_workers
+            )
+
+        self.with_patched_image_loader_and_image_folder(block)
