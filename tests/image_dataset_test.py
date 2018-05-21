@@ -54,7 +54,15 @@ class ImageDatasetTest(TestCase):
 
         self.with_patched_image_folder(block)
 
-    def test_it_creates_an_ImageDataset_from_the_ImageFolder(self):
+    def test_it_creates_a_DataLoader(self):
+        def block(_patched_image_folder, patched_data_loader):
+            mock_data_loader = 'fake data loader'
+            patched_data_loader.return_value = mock_data_loader
+            assert_that(self.subject()._data_loader, equal_to(mock_data_loader))
+
+        self.with_patched_image_loader_and_image_folder(block)
+
+    def test_it_creates_a_DataLoader_from_the_ImageFolder(self):
         def block(patched_image_folder, patched_data_loader):
             batch_size = 123
             shuffle = False
