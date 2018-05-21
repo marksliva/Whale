@@ -1,5 +1,4 @@
 from unittest import TestCase
-from hamcrest import *
 from src.whale.image_dataset import ImageDataset
 from unittest.mock import patch, MagicMock
 
@@ -25,13 +24,13 @@ class ImageDatasetTest(TestCase):
 
     def test_has_the_expected_path(self):
         def block(_patched_image_folder):
-            assert_that(self.subject()._path, equal_to(self._path))
+            assert self.subject()._path == self._path
 
         self.with_patched_image_folder(block)
 
     def test_creates_ImageFolder_with_the_expected_path(self):
         def block(patched_image_folder):
-            assert_that(self.subject()._path, equal_to(self._path))
+            assert self.subject()._path == self._path
             patched_image_folder.assert_called_with(self._path)
 
         self.with_patched_image_folder(block)
@@ -40,7 +39,7 @@ class ImageDatasetTest(TestCase):
         def block(patched_image_folder):
             mock_image_folder = 'fake image folder'
             patched_image_folder.return_value = mock_image_folder
-            assert_that(self.subject()._image_folder, equal_to(mock_image_folder))
+            assert self.subject()._image_folder == mock_image_folder
 
         self.with_patched_image_folder(block)
 
@@ -50,7 +49,7 @@ class ImageDatasetTest(TestCase):
             length = 42
             mock_image_folder.__len__ .return_value = length
             patched_image_folder.return_value = mock_image_folder
-            assert_that(self.subject().__len__(), equal_to(length))
+            assert self.subject().__len__() == length
 
         self.with_patched_image_folder(block)
 
@@ -58,7 +57,7 @@ class ImageDatasetTest(TestCase):
         def block(_patched_image_folder, patched_data_loader):
             mock_data_loader = 'fake data loader'
             patched_data_loader.return_value = mock_data_loader
-            assert_that(self.subject()._data_loader, equal_to(mock_data_loader))
+            assert self.subject()._data_loader == mock_data_loader
 
         self.with_patched_image_loader_and_image_folder(block)
 
@@ -77,7 +76,7 @@ class ImageDatasetTest(TestCase):
                 num_workers
             )._data_loader
 
-            assert_that(data_loader, equal_to(mock_data_loader))
+            assert data_loader == mock_data_loader
             patched_data_loader.assert_called_with(
                 mock_image_folder,
                 batch_size,
