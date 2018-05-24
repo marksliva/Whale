@@ -1,14 +1,14 @@
 from torchvision.models.resnet import resnet18
 from torchvision.models.alexnet import alexnet
+from torch import nn
 
 
 class ImageModel:
     @staticmethod
     def built_in_models():
-        # this a method, because when it is a class variable the
-        # mocked models are inaccessible and it starts downloading weights
         return {
             'resnet18': resnet18,
+            # haven't gotten the models below to train
             'alexnet': alexnet
         }
 
@@ -17,7 +17,11 @@ class ImageModel:
         model = ImageModel.built_in_models().get(model_name, None)
         if model is None:
             raise ImageModel.ModelNotFound('model: ', model_name, ' not found')
-        return model(True)
+
+        built_in_model = model(True)
+        new_activation = nn.Linear(in_features=512, out_features=4254, bias=True)
+        built_in_model.fc = new_activation
+        return built_in_model
 
     class ModelNotFound(BaseException):
         pass
