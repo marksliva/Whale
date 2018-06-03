@@ -1,6 +1,6 @@
-from torchvision.datasets.folder import ImageFolder
 from torch.utils.data import DataLoader
-from torchvision.transforms import ToTensor, CenterCrop, Compose
+from torchvision.datasets.folder import ImageFolder
+from torchvision.transforms import ToTensor, Compose, Resize
 
 
 class ImageDataset:
@@ -12,7 +12,7 @@ class ImageDataset:
     @staticmethod
     def crop_and_to_tensor(pil_image):
         return Compose([
-            CenterCrop(200),
+            Resize((200, 200)),
             ToTensor()
         ])(pil_image)
 

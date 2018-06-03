@@ -18,7 +18,12 @@ class ImageModel:
         if model is None:
             raise ImageModel.ModelNotFound('model: ', model_name, ' not found')
 
+
         built_in_model = model(True)
+
+        for param in built_in_model.parameters():
+            param.requires_grad = False
+
         new_activation = nn.Linear(in_features=512, out_features=4254, bias=True)
         built_in_model.fc = new_activation
         return built_in_model
