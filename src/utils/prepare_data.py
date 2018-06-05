@@ -2,8 +2,9 @@ import pandas as pd
 import os
 from shutil import copyfile
 
-src_path = 'data/raw_train/'
-destination_path = 'data/train/'
+PYTHON_PATH = os.environ.get('PYTHONPATH')
+src_path = '%s/data/raw_train/' % PYTHON_PATH
+destination_path = '%s/data/train/' % PYTHON_PATH
 
 
 def copy_example(filename, label):
@@ -18,7 +19,7 @@ def copy_example(filename, label):
 
 
 def copy_examples():
-    whale_train = pd.read_csv("data/train.csv")
+    whale_train = pd.read_csv('%s/data/train.csv' % PYTHON_PATH)
 
     if not os.path.exists(destination_path):
         os.mkdir(destination_path)

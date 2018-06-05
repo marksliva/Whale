@@ -1,4 +1,5 @@
-# Code for working on a kaggle challenge
+# Humpback Whale Identification Challenge
+[https://www.kaggle.com/c/whale-categorization-playground](https://www.kaggle.com/c/whale-categorization-playground)
 
 ## Python Environment Setup
 
@@ -11,14 +12,12 @@ Set up a conda environment for the project
 1. click `ok`
 
 ## Data Setup
-1. download the data from https://www.kaggle.com/c/whale-categorization-playground/data
-1. unzip train.zip and test.zip
+1. in Whale root, `mkdir data`
+1. download the files from [https://www.kaggle.com/c/whale-categorization-playground/data](https://www.kaggle.com/c/whale-categorization-playground/data) into `data`
+1. unzip `train.zip` and `test.zip`
 1. move the train dir to raw train: `mv train raw_train`
 1. run the `src/utils/prepare_data.py` script (you can right click on it and click `run`)
-1. it will most likely fail. click on `prepare_data` and then `edit configurations:`
-1. change the working directory to be the root of the project, so remove `src/utils`
-1. now you should be able to run prepare_data
-  - `prepare_data` will create a directory in data called `train` which will have images in the format of `label/example1.jpg`
+  - this will create a directory in data called `train` which will have images in the format of `label/example1.jpg`
 
 ## Running tests
 1. click on `Edit Configurations:` from the run menu
@@ -28,5 +27,3 @@ Set up a conda environment for the project
 1. under pattern, put `*test.py`
 1. click on `ok`
 1. click on the play button to run the tests
-
-[https://www.kaggle.com/c/whale-categorization-playground](https://www.kaggle.com/c/whale-categorization-playground)
