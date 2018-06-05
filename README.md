@@ -21,7 +21,7 @@ Set up a conda environment for the project
   - `prepare_data` will create a directory in data called `train` which will have images in the format of `label/example1.jpg`
 
 ## Running tests
-1. click on where it says `prepare_data`, then click on `Edit Configurations:`
+1. click on `Edit Configurations:` from the run menu
 1. click the `+` button, and then `Python tests/Unittests`
 1. name it something like `unit tests`
 1. for the `Target/script path` navigate to Whale/tests

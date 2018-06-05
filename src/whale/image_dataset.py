@@ -12,7 +12,7 @@ class ImageDataset:
     @staticmethod
     def crop_and_to_tensor(pil_image):
         return Compose([
-            Resize((200, 200)),
+            Resize((224, 224)),
             ToTensor()
         ])(pil_image)
 
