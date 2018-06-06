@@ -6,11 +6,11 @@ from torchvision.transforms import ToTensor, Compose, Resize
 class ImageDataset:
     def __init__(self, path, batch_size, shuffle, num_workers):
         self._path = path
-        self._image_folder = ImageFolder(self._path, transform=self.crop_and_to_tensor)
+        self._image_folder = ImageFolder(self._path, transform=self.resize_and_to_tensor)
         self.data_loader = DataLoader(self._image_folder, batch_size, shuffle=shuffle, num_workers=num_workers)
 
     @staticmethod
-    def crop_and_to_tensor(pil_image):
+    def resize_and_to_tensor(pil_image):
         return Compose([
             Resize((224, 224)),
             ToTensor()

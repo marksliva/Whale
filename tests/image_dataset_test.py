@@ -22,8 +22,8 @@ class ImageDatasetTest(TestCase):
     @staticmethod
     def with_patched_folder_loader_and_transforms(block):
         with patch('src.whale.image_dataset.ImageFolder') as _patched_image_folder, patch('src.whale.image_dataset.DataLoader') as _patched_dataset_folder:
-            with patch('src.whale.image_dataset.ToTensor') as patched_to_tensor, patch('src.whale.image_dataset.CenterCrop') as patched_center_crop, patch('src.whale.image_dataset.Compose') as patched_compose:
-                block(patched_to_tensor, patched_center_crop, patched_compose)
+            with patch('src.whale.image_dataset.ToTensor') as patched_to_tensor, patch('src.whale.image_dataset.Resize') as patched_resize, patch('src.whale.image_dataset.Compose') as patched_compose:
+                block(patched_to_tensor, patched_resize, patched_compose)
 
     def setUp(self):
         self._path = 'a/fake/path'
@@ -38,7 +38,7 @@ class ImageDatasetTest(TestCase):
     def test_creates_ImageFolder_with_the_expected_path(self):
         def block(patched_image_folder):
             assert self.subject()._path == self._path
-            patched_image_folder.assert_called_with(self._path, transform=self.subject().crop_and_to_tensor)
+            patched_image_folder.assert_called_with(self._path, transform=self.subject().resize_and_to_tensor)
 
         self.with_patched_image_folder(block)
 
@@ -93,22 +93,22 @@ class ImageDatasetTest(TestCase):
 
         self.with_patched_image_loader_and_image_folder(block)
 
-    def test_crop_and_to_tensor_applies_a_composition_of_transforms_to_the_image(self):
-        def block(patched_to_tensor, patched_center_crop, patched_compose):
+    def test_resize_and_to_tensor_applies_a_composition_of_transforms_to_the_image(self):
+        def block(patched_to_tensor, patched_resize, patched_compose):
             compose_return_value = 'return compose'
             mock_compose = MagicMock('mocked compose')
             mock_compose.return_value = compose_return_value
             patched_compose.return_value = mock_compose
-            mock_center_crop = 'center crop'
-            patched_center_crop.return_value = mock_center_crop
+            mock_resize = 'resize'
+            patched_resize.return_value = mock_resize
             mock_to_tensor = 'to tensor'
             patched_to_tensor.return_value = mock_to_tensor
             pil_image = 'mock image'
 
-            composed = self._described_class.crop_and_to_tensor(pil_image)
+            composed = self._described_class.resize_and_to_tensor(pil_image)
 
-            patched_center_crop.assert_called_with(200)
-            patched_compose.assert_called_with([mock_center_crop, mock_to_tensor])
+            patched_resize.assert_called_with((224, 224))
+            patched_compose.assert_called_with([mock_resize, mock_to_tensor])
             mock_compose.assert_called_with(pil_image)
             assert composed == compose_return_value
 

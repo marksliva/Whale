@@ -24,6 +24,7 @@ class ImageModel:
         for param in built_in_model.parameters():
             param.requires_grad = False
 
+        #softmax = nn.Softmax2d()
         new_activation = nn.Linear(in_features=512, out_features=4254, bias=True)
         built_in_model.fc = new_activation
         return built_in_model
