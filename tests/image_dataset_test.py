@@ -141,3 +141,8 @@ class ImageDatasetTest(TestCase):
             assert self.subject().index_to_class_dictionary == {}
 
         self.with_patched_image_folder(block)
+
+    def test_parses_out_the_filenames(self):
+        def block(patched_image_folder):
+            # todo: write the test
+            pass

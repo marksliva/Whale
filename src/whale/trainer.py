@@ -25,7 +25,7 @@ class Trainer:
 
     def train(self):
         self._model.train()
-        epochs = 1
+        epochs = 20
         for epoch in range(epochs):
             running_loss = 0.0
 
@@ -62,10 +62,9 @@ class Trainer:
 
             print('loss on the test set: ', running_loss / self._test_dataset.__len__())
 
-
-        # generate predictions
-
+        # write predictions to a csv file
         with(open('predictions_%s.csv' % time.strftime('%y-%m-%d_%H:%M:%S'), 'w')) as csv_file:
+            filename_index = 0
             predictions_csv = csv.writer(csv_file, delimiter=',')
             predictions_csv.writerow(['Image', 'Id'])
             for inputs, labels in self._test_dataset.data_loader:
@@ -74,9 +73,10 @@ class Trainer:
                 outputs = self._model(inputs)
                 for output in outputs:
                     index = np.argmax(output.detach().numpy())
+                    filename = self._test_dataset.filenames[filename_index]
+                    filename_index += 1
                     label = self._train_dataset.index_to_class_dictionary.get(index) or 'fail-whale'
-                    predictions_csv.writerow(['todo: put image filename here', label])
-                    print('predicted class for the input is: ', label)
+                    predictions_csv.writerow([filename, label])
 
 
 Trainer().train()

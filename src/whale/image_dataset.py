@@ -9,6 +9,7 @@ class ImageDataset:
         self._image_folder = ImageFolder(self._path, transform=self.resize_and_to_tensor)
         index_to_class_dictionary = self.swap_keys_values(self._image_folder.class_to_idx) if map_index_to_class else {}
         self.index_to_class_dictionary = index_to_class_dictionary
+        self.filenames = self.parse_image_filenames(self._image_folder.imgs)
         self.data_loader = DataLoader(self._image_folder, batch_size, shuffle=shuffle, num_workers=num_workers)
 
     @staticmethod
@@ -17,6 +18,10 @@ class ImageDataset:
             Resize((224, 224)),
             ToTensor()
         ])(pil_image)
+
+    @staticmethod
+    def parse_image_filenames(full_paths):
+        return list(map(lambda path: path[0].split('/')[-1], full_paths))
 
     @staticmethod
     def swap_keys_values(dictionary):
