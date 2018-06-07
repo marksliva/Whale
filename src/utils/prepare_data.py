@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from shutil import copyfile
+from shutil import copyfile, move
 
 PYTHON_PATH = os.environ.get('PYTHONPATH')
 src_path = '%s/data/raw_train/' % PYTHON_PATH
@@ -27,5 +27,14 @@ def copy_examples():
     for index, row in whale_train.iterrows():
         copy_example(row['Image'], row['Id'])
 
+def move_test_examples():
+    test_src_path = '%s/data/test/' % PYTHON_PATH
+    test_temp_path = '%s/data/test2/' % PYTHON_PATH
+    test_dest_path = '%s/data/test/test-images/' % PYTHON_PATH
+    if not os.path.exists(test_dest_path):
+        move(test_src_path, test_temp_path)
+        os.mkdir(test_src_path)
+        move(test_temp_path, test_dest_path)
 
 copy_examples()
+move_test_examples()

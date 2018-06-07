@@ -27,3 +27,6 @@ Set up a conda environment for the project
 1. under pattern, put `*test.py`
 1. click on `ok`
 1. click on the play button to run the tests
+
+## Training and Predicting
+PYTHONPATH=~/PycharmProjects/Whale python trainer.py

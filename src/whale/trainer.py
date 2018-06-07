@@ -16,16 +16,16 @@ class Trainer:
     def __init__(self):
         model = ImageModel.create_model('resnet18')
         self._model = model.to(device)
-        # self._train_dataset = ImageDataset(os.getcwd() + '/../../data/train', 1, True, 2, True)
-        # self._test_dataset = ImageDataset(os.getcwd() + '/../../data/test', 1, False, 2, False)
-        self._train_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, True, 2, True)
-        self._test_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, False, 2, False)
+        self._train_dataset = ImageDataset(os.getcwd() + '/../../data/train', 1, True, 2, True)
+        self._test_dataset = ImageDataset(os.getcwd() + '/../../data/test', 1, False, 2, False)
+        # self._train_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, True, 2, True)
+        # self._test_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, False, 2, False)
         self._criterion = torch.nn.CrossEntropyLoss()
         self._optimizer = torch.optim.SGD(list(self._model.parameters())[-2:], lr=0.00007, momentum=0.9)
 
     def train(self):
         self._model.train()
-        epochs = 20
+        epochs = 1
         for epoch in range(epochs):
             running_loss = 0.0
 
