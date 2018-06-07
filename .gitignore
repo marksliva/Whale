@@ -3,3 +3,4 @@ list
 .idea
 data/
 *__pycache__
+predictions_*
