@@ -1,5 +1,8 @@
 import os
+import time
 import torch
+import numpy as np
+import csv
 
 from src.whale.image_dataset import ImageDataset
 from src.whale.image_model import ImageModel
@@ -13,16 +16,16 @@ class Trainer:
     def __init__(self):
         model = ImageModel.create_model('resnet18')
         self._model = model.to(device)
-        # self._train_dataset = ImageDataset(os.getcwd() + '/../../data/train', 1, True, 2)
-        # self._test_dataset = ImageDataset(os.getcwd() + '/../../data/test', 1, True, 2)
-        self._train_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, True, 2)
-        self._test_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, True, 2)
+        # self._train_dataset = ImageDataset(os.getcwd() + '/../../data/train', 1, True, 2, True)
+        # self._test_dataset = ImageDataset(os.getcwd() + '/../../data/test', 1, False, 2, False)
+        self._train_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, True, 2, True)
+        self._test_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, False, 2, False)
         self._criterion = torch.nn.CrossEntropyLoss()
         self._optimizer = torch.optim.SGD(list(self._model.parameters())[-2:], lr=0.00007, momentum=0.9)
 
     def train(self):
         self._model.train()
-        epochs = 50
+        epochs = 1
         for epoch in range(epochs):
             running_loss = 0.0
 
@@ -58,5 +61,22 @@ class Trainer:
                 running_loss += loss
 
             print('loss on the test set: ', running_loss / self._test_dataset.__len__())
+
+
+        # generate predictions
+
+        with(open('predictions_%s.csv' % time.strftime('%y-%m-%d_%H:%M:%S'), 'w')) as csv_file:
+            predictions_csv = csv.writer(csv_file, delimiter=',')
+            predictions_csv.writerow(['Image', 'Id'])
+            for inputs, labels in self._test_dataset.data_loader:
+                self._model.eval()
+                inputs = inputs.to(device)
+                outputs = self._model(inputs)
+                for output in outputs:
+                    index = np.argmax(output.detach().numpy())
+                    label = self._train_dataset.index_to_class_dictionary.get(index) or 'fail-whale'
+                    predictions_csv.writerow(['todo: put image filename here', label])
+                    print('predicted class for the input is: ', label)
+
 
 Trainer().train()

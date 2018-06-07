@@ -4,8 +4,8 @@ from unittest.mock import patch, MagicMock
 
 
 class ImageDatasetTest(TestCase):
-    def subject(self, batch_size = 4, shuffle = True, num_workers = 8):
-        return ImageDataset(self._path, batch_size, shuffle, num_workers)
+    def subject(self, batch_size=4, shuffle=True, num_workers=8, map_index_to_class=False):
+        return ImageDataset(self._path, batch_size, shuffle, num_workers, map_index_to_class)
 
     @staticmethod
     def with_patched_image_loader_and_image_folder(block):
@@ -113,3 +113,31 @@ class ImageDatasetTest(TestCase):
             assert composed == compose_return_value
 
         self.with_patched_folder_loader_and_transforms(block)
+
+    def test_remaps_the_class_lookup_to_be_index_based_when_initialized_with_flag(self):
+        def block(patched_image_folder):
+            class_to_index_dictionary = {
+                'foo': 0,
+                'bar': 1,
+                'baz': 2,
+            }
+            expected_index_to_class_dictionary = {
+                0: 'foo',
+                1: 'bar',
+                2: 'baz'
+            }
+            mocked_image_folder = MagicMock('mocked image folder')
+            mocked_image_folder.class_to_idx = class_to_index_dictionary
+            patched_image_folder.return_value = mocked_image_folder
+            assert self.subject(map_index_to_class=True).index_to_class_dictionary == expected_index_to_class_dictionary
+
+        self.with_patched_image_folder(block)
+
+    def test_does_not_remap_the_class_lookup_to_be_index_based_when_missing_flag(self):
+        def block(patched_image_folder):
+            mocked_image_folder = MagicMock('mocked image folder')
+            mocked_image_folder.class_to_idx = {'some key': 'value'}
+            patched_image_folder.return_value = mocked_image_folder
+            assert self.subject().index_to_class_dictionary == {}
+
+        self.with_patched_image_folder(block)
