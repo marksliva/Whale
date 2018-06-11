@@ -1,3 +1,4 @@
+import copy
 import os
 import time
 import torch
@@ -24,8 +25,10 @@ class Trainer:
         self._optimizer = torch.optim.SGD(list(self._model.parameters())[-2:], lr=0.00007, momentum=0.9)
 
     def train(self):
+        lowest_loss = 999999999.9
+        best_model_weights = None
         self._model.train()
-        epochs = 1
+        epochs = 10
         for epoch in range(epochs):
             running_loss = 0.0
 
@@ -61,14 +64,23 @@ class Trainer:
                 running_loss += loss
 
             print('loss on the test set: ', running_loss / self._test_dataset.__len__())
+            if running_loss < lowest_loss:
+                # todo: if we get around to data augmentation and then segmenting out a validation set,
+                # we would want to update this part to use the accuracy instead. (https://stackoverflow.com/a/46800337)
+                print('saving best model weights with loss: %s at epoch: %s' % (running_loss, epoch))
+                lowest_loss = running_loss
+                best_model_weights = copy.deepcopy(self._model.state_dict())
 
         # write predictions to a csv file
         with(open('predictions_%s.csv' % time.strftime('%y-%m-%d_%H:%M:%S'), 'w')) as csv_file:
             filename_index = 0
             predictions_csv = csv.writer(csv_file, delimiter=',')
             predictions_csv.writerow(['Image', 'Id'])
-            for inputs, labels in self._test_dataset.data_loader:
-                self._model.eval()
+            self._model.load_state_dict(best_model_weights)
+            weights_path = 'model_weights_%s' % time.strftime('%y-%m-%d_%H:%M:%S')
+            torch.save(self._model.state_dict(), weights_path)
+            self._model.eval()
+            for inputs, _labels in self._test_dataset.data_loader:
                 inputs = inputs.to(device)
                 outputs = self._model(inputs)
                 for output in outputs:

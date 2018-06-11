@@ -4,3 +4,4 @@ list
 data/
 *__pycache__
 predictions_*
+model_weights_*
