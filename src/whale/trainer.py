@@ -10,15 +10,16 @@ from src.whale.image_model import ImageModel
 
 
 torch.manual_seed(42)
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+use_gpu = torch.cuda.is_available()
+device = torch.device("cuda:0" if use_gpu else "cpu")
 
 
 class Trainer:
     def __init__(self):
         model = ImageModel.create_model('resnet18')
         self._model = model.to(device)
-        self._train_dataset = ImageDataset(os.getcwd() + '/../../data/train', 1, True, 2, True)
-        self._test_dataset = ImageDataset(os.getcwd() + '/../../data/test', 1, False, 2, False)
+        self._train_dataset = ImageDataset('data/train', 32, True, 2, True)
+        self._test_dataset = ImageDataset('data/test', 1, False, 2, False)
         # self._train_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, True, 2, True)
         # self._test_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, False, 2, False)
         self._criterion = torch.nn.CrossEntropyLoss()
@@ -84,7 +85,10 @@ class Trainer:
                 inputs = inputs.to(device)
                 outputs = self._model(inputs)
                 for output in outputs:
-                    index = np.argmax(output.detach().numpy())
+                    if use_gpu:
+                        index = np.argmax(output.detach().cpu().numpy())
+                    else:
+                        index = np.argmax(output.detach().numpy())
                     filename = self._test_dataset.filenames[filename_index]
                     filename_index += 1
                     label = self._train_dataset.index_to_class_dictionary.get(index) or 'fail-whale'
