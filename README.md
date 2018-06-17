@@ -29,4 +29,6 @@ Set up a conda environment for the project
 1. click on the play button to run the tests
 
 ## Training and Predicting
-PYTHONPATH=~/PycharmProjects/Whale python trainer.py
+Either:
+  * right click on `trainer.py` in PyCharm and click the run button
+  * run from the command line: `PYTHONPATH=~/PycharmProjects/Whale python src/whale/trainer.py`
