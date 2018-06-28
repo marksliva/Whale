@@ -19,7 +19,7 @@ Set up a conda environment for the project
 1. run the `src/utils/prepare_data.py` script (you can right click on it and click `run`)
   - this will create a directory in data called `train` which will have images in the format of `label/example1.jpg`
 
-## Running tests
+## Running tests in Pycharm
 1. click on `Edit Configurations:` from the run menu
 1. click the `+` button, and then `Python tests/Unittests`
 1. name it something like `unit tests`
@@ -27,6 +27,12 @@ Set up a conda environment for the project
 1. under pattern, put `*test.py`
 1. click on `ok`
 1. click on the play button to run the tests
+
+## Running tests from command line
+1. create a conda environment using the requirements.txt:
+`conda install --file requirements.txt`
+1. run the following command:
+`python -m unittest discover -s tests -t tests -p *test.py`
 
 ## Training and Predicting
 Either:
