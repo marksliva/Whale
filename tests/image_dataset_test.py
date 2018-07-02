@@ -144,5 +144,5 @@ class ImageDatasetTest(TestCase):
 
     def test_parses_out_the_filenames(self):
         def block(patched_image_folder):
-            # todo: write the test
+            # todo: fix all the tests
             pass

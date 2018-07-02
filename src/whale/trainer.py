@@ -29,7 +29,7 @@ class Trainer:
         lowest_loss = 999999999.9
         best_model_weights = None
         self._model.train()
-        epochs = 10
+        epochs = 1
         for epoch in range(epochs):
             running_loss = 0.0
 
@@ -66,7 +66,7 @@ class Trainer:
 
             print('loss on the test set: ', running_loss / self._test_dataset.__len__())
             if running_loss < lowest_loss:
-                # todo: if we get around to data augmentation and then segmenting out a validation set,
+                # todo: when we segment out a validation set (after data augmentation in image_datatset),
                 # we would want to update this part to use the accuracy instead. (https://stackoverflow.com/a/46800337)
                 print('saving best model weights with loss: %s at epoch: %s' % (running_loss, epoch))
                 lowest_loss = running_loss
