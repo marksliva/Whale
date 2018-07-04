@@ -1,0 +1,127 @@
+.EE..E.E.EEE.
+======================================================================
+ERROR: test_creates_an_ImageFolder (image_dataset_test.ImageDatasetTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 51, in test_creates_an_ImageFolder
+    self.with_patched_image_folder(block)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 20, in with_patched_image_folder
+    block(patched_image_folder)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 49, in block
+    assert self.subject()._image_folder == mock_image_folder
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 8, in subject
+    return ImageDataset(self._path, batch_size, shuffle, num_workers, map_index_to_class)
+  File "/home/m/PycharmProjects/Whale/src/whale/image_dataset.py", line 12, in __init__
+    self.filenames = self.parse_image_filenames(self._image_folder.imgs)
+AttributeError: 'str' object has no attribute 'imgs'
+
+======================================================================
+ERROR: test_does_not_remap_the_class_lookup_to_be_index_based_when_missing_flag (image_dataset_test.ImageDatasetTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 143, in test_does_not_remap_the_class_lookup_to_be_index_based_when_missing_flag
+    self.with_patched_image_folder(block)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 20, in with_patched_image_folder
+    block(patched_image_folder)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 141, in block
+    assert self.subject().index_to_class_dictionary == {}
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 8, in subject
+    return ImageDataset(self._path, batch_size, shuffle, num_workers, map_index_to_class)
+  File "/home/m/PycharmProjects/Whale/src/whale/image_dataset.py", line 12, in __init__
+    self.filenames = self.parse_image_filenames(self._image_folder.imgs)
+  File "/home/m/anaconda3/envs/whale2/lib/python3.6/unittest/mock.py", line 582, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'imgs'
+
+======================================================================
+ERROR: test_it_creates_a_DataLoader_from_the_ImageFolder (image_dataset_test.ImageDatasetTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 94, in test_it_creates_a_DataLoader_from_the_ImageFolder
+    self.with_patched_image_loader_and_image_folder(block)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 14, in with_patched_image_loader_and_image_folder
+    block(patched_image_folder, patched_data_loader)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 83, in block
+    num_workers
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 8, in subject
+    return ImageDataset(self._path, batch_size, shuffle, num_workers, map_index_to_class)
+  File "/home/m/PycharmProjects/Whale/src/whale/image_dataset.py", line 12, in __init__
+    self.filenames = self.parse_image_filenames(self._image_folder.imgs)
+AttributeError: 'str' object has no attribute 'imgs'
+
+======================================================================
+ERROR: test_remaps_the_class_lookup_to_be_index_based_when_initialized_with_flag (image_dataset_test.ImageDatasetTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 134, in test_remaps_the_class_lookup_to_be_index_based_when_initialized_with_flag
+    self.with_patched_image_folder(block)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 20, in with_patched_image_folder
+    block(patched_image_folder)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 132, in block
+    assert self.subject(map_index_to_class=True).index_to_class_dictionary == expected_index_to_class_dictionary
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 8, in subject
+    return ImageDataset(self._path, batch_size, shuffle, num_workers, map_index_to_class)
+  File "/home/m/PycharmProjects/Whale/src/whale/image_dataset.py", line 12, in __init__
+    self.filenames = self.parse_image_filenames(self._image_folder.imgs)
+  File "/home/m/anaconda3/envs/whale2/lib/python3.6/unittest/mock.py", line 582, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'imgs'
+
+======================================================================
+ERROR: test_the_ImageFolder_returns_length_based_on_the_image_folder (image_dataset_test.ImageDatasetTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 61, in test_the_ImageFolder_returns_length_based_on_the_image_folder
+    self.with_patched_image_folder(block)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 20, in with_patched_image_folder
+    block(patched_image_folder)
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 59, in block
+    assert self.subject().__len__() == length
+  File "/home/m/PycharmProjects/Whale/tests/image_dataset_test.py", line 8, in subject
+    return ImageDataset(self._path, batch_size, shuffle, num_workers, map_index_to_class)
+  File "/home/m/PycharmProjects/Whale/src/whale/image_dataset.py", line 12, in __init__
+    self.filenames = self.parse_image_filenames(self._image_folder.imgs)
+  File "/home/m/anaconda3/envs/whale2/lib/python3.6/unittest/mock.py", line 582, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'imgs'
+
+======================================================================
+ERROR: test_creating_a_built_in_alexnet_model_creates_a_pretrained_model (image_model_test.ImageModelTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 56, in test_creating_a_built_in_alexnet_model_creates_a_pretrained_model
+    self.with_patched_alexnet_model(block)
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 22, in with_patched_alexnet_model
+    block(patched_alexnet_model, patched_linear_layer)
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 48, in block
+    actual_model = self.subject('alexnet')
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 12, in subject
+    return self._described_class.create_model(model_name)
+  File "/home/m/PycharmProjects/Whale/src/whale/image_model.py", line 24, in create_model
+    for param in built_in_model.parameters():
+  File "/home/m/anaconda3/envs/whale2/lib/python3.6/unittest/mock.py", line 582, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'parameters'
+
+======================================================================
+ERROR: test_creating_a_built_in_resnet_model_creates_a_pretrained_model (image_model_test.ImageModelTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 39, in test_creating_a_built_in_resnet_model_creates_a_pretrained_model
+    self.with_patched_resnet_model(block)
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 17, in with_patched_resnet_model
+    block(patched_resnet18_model, patched_linear_layer)
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 31, in block
+    actual_model = self.subject('resnet18')
+  File "/home/m/PycharmProjects/Whale/tests/image_model_test.py", line 12, in subject
+    return self._described_class.create_model(model_name)
+  File "/home/m/PycharmProjects/Whale/src/whale/image_model.py", line 24, in create_model
+    for param in built_in_model.parameters():
+  File "/home/m/anaconda3/envs/whale2/lib/python3.6/unittest/mock.py", line 582, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'parameters'
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.010s
+
+FAILED (errors=7)

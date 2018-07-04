@@ -28,11 +28,11 @@ Set up a conda environment for the project
 1. click on `ok`
 1. click on the play button to run the tests
 
-## Running tests from command line
+## Running tests from the command line
 1. create a conda environment using the requirements.txt:
 `conda install --file requirements.txt`
-1. run the following command:
-`python -m unittest discover -s tests -t tests -p *test.py`
+1. run the following command (outputs to TestOutput/log and git adds it):
+`./run-tests.sh`
 
 ## Training and Predicting
 Either:
