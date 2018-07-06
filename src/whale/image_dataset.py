@@ -12,6 +12,7 @@ class ImageDataset:
         self.filenames = self.parse_image_filenames(self._image_folder.imgs)
         self.data_loader = DataLoader(self._image_folder, batch_size, shuffle=shuffle, num_workers=num_workers)
 
+    # TODO add data augmentation to the transform
     @staticmethod
     def resize_and_to_tensor(pil_image):
         return Compose([

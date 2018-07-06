@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 from shutil import copyfile, move
+from augment_data import crop_image_with_cv2
 
 PYTHON_PATH = os.environ.get('PYTHONPATH')
 src_path = '%s/data/raw_train/' % PYTHON_PATH
@@ -16,6 +17,7 @@ def copy_example(filename, label):
         os.mkdir(label_path)
 
     copyfile(src_file, destination_file)
+    crop_image_with_cv2(src_file, destination_file)
 
 
 def copy_examples():
