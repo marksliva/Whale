@@ -1,5 +1,4 @@
 import copy
-import os
 import time
 import torch
 import numpy as np
@@ -18,10 +17,15 @@ class Trainer:
     def __init__(self):
         model = ImageModel.create_model('resnet18')
         self._model = model.to(device)
+
+        # todo: segment out a validation dataset from the training set
         self._train_dataset = ImageDataset('data/train', 32, True, 2, True)
+        self._validation_dataset = ImageDataset('data/train', 32, False, 2, False)
         self._test_dataset = ImageDataset('data/test', 1, False, 2, False)
-        # self._train_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, True, 2, True)
-        # self._test_dataset = ImageDataset(os.getcwd() + '/../../tests/fixtures/image_dataset_train', 1, False, 2, False)
+        # self._train_dataset = ImageDataset('tests/fixtures/image_dataset_train', 1, True, 2, True)
+        # self._validation_dataset = ImageDataset('tests/fixtures/image_dataset_train', 1, False, 2, False)
+        # self._test_dataset = ImageDataset('tests/fixtures/image_dataset_train', 1, False, 2, False)
+
         self._criterion = torch.nn.CrossEntropyLoss()
         self._optimizer = torch.optim.SGD(list(self._model.parameters())[-2:], lr=0.00007, momentum=0.9)
 
@@ -55,8 +59,8 @@ class Trainer:
 
             running_loss = 0.0
 
-            # test phase
-            for inputs, labels in self._test_dataset.data_loader:
+            # validation phase
+            for inputs, labels in self._validation_dataset.data_loader:
                 self._model.eval()
                 inputs = inputs.to(device)
                 labels = labels.to(device)
@@ -64,7 +68,7 @@ class Trainer:
                 loss = self._criterion(outputs, labels)
                 running_loss += loss
 
-            print('loss on the test set: ', running_loss / self._test_dataset.__len__())
+            print('loss on the validation set: ', running_loss / self._validation_dataset.__len__())
             if running_loss < lowest_loss:
                 # todo: when we segment out a validation set (after data augmentation in image_datatset),
                 # we would want to update this part to use the accuracy instead. (https://stackoverflow.com/a/46800337)

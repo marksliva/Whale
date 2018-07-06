@@ -38,3 +38,37 @@ Set up a conda environment for the project
 Either:
   * right click on `trainer.py` in PyCharm and click the run button
   * run from the command line: `PYTHONPATH=~/PycharmProjects/Whale python src/whale/trainer.py`
+
+## Data Exploration
+```
+train = pd.read_csv('data/train.csv')
+>>> train.groupby('Id').nunique().sort_values('Image', ascending=False)
+             Image Id
+Id
+new_whale    810   1
+w_1287fbc     34   1
+w_98baff9     27   1
+w_7554f44     26   1
+w_1eafe46     23   1
+w_fd1cb9d     22   1
+w_ab4cae2     22   1
+w_693c9ee     22   1
+w_987a36f     21   1
+w_43be268     21   1
+w_73d5489     21   1
+w_f19faeb     20   1
+w_95874a5     19   1
+w_9b401eb     19   1
+...
+
+train.groupby('Id').nunique().sort_values('Image', ascending=False).describe()
+             Image      Id
+count  4251.000000  4251.0
+mean      2.317102     1.0
+std      12.586066     0.0
+min       1.000000     1.0
+25%       1.000000     1.0
+50%       1.000000     1.0
+75%       2.000000     1.0
+max     810.000000     1.0
+```
